@@ -35,33 +35,53 @@ void print_list(struct node*);
 //파일내 텍스트 내용  삭제, 추가
 
 void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
-	struct node* target_ptr=head_ptr->next;	
+	struct node* target_ptr=head_ptr;	
 	struct node* target_ptr2=head_ptr2->next;
 	struct node* prev=head_ptr;
-	struct node* temp_add=(struct node*)malloc(sizeof(struct node*));
+	struct node* temp_add=(struct node*)malloc(sizeof(head_ptr));
 	printf("delete 실행\n");
+int i = 0;
 	while(target_ptr!=NULL){
 		if(strcmp(target_ptr->name,name)==0){
-			break;
+//printf("%s",target_ptr->name);			
+break;
 		}
 		else{
+printf("i:%d\n",i++);
 			prev=target_ptr;
 			target_ptr=target_ptr->next;
+printf("%s %s\n",prev->name,target_ptr->name);
 		}
 	}
-	if(target_ptr==NULL) return;
+//	if(target_ptr==NULL) return;
 
-	target_ptr=temp_add; //
-	prev->next=target_ptr->next;
+//printf("");
+//print_list(target_ptr);
+temp_add=target_ptr;
+head_ptr=head_ptr->next;
+//	target_ptr=temp_add; //
+printf("%s, %s\n",head_ptr->next->name,head_ptr->name);
+printf("%s , %s\n",prev->name,target_ptr->name);
+//	prev->next=target_ptr->next;
 	free(target_ptr);
-//	target_ptr=head_ptr;
-	
-	while(target_ptr2->next!=NULL){
-		target_ptr2=target_ptr2->next;
+//	head_ptr=target_ptr;
+//	print_list(head_ptr);
+//print_list(head_ptr2);
+	while(head_ptr2->next!=NULL){
+		head_ptr2=head_ptr2->next;
 		}
-	target_ptr2->next=temp_add;
 	temp_add->next=NULL;
-	
+	head_ptr2->next=temp_add;
+printf("delete===========\n");
+print_list(head_ptr2);
+printf("delete===========\n");
+print_list(head_ptr);
+printf("\n\n\n");
+head_ptr=head_ptr;
+target_ptr=head_ptr;
+prev=head_ptr;
+//	head_ptr2=temp_add;
+
 //	fp=fopen("player.txt","wb");
 //	fwrite(&new_node,sizeof(new_node),1,fp);
 
@@ -93,7 +113,7 @@ struct node* list_head = NULL;
 }
 //1번 기능 실행 함수
 
-struct node*  readPlayer(char* filename, struct node* what_node) {
+struct node* readPlayer(char* filename, struct node* what_node) {
 
     openFile(filename);
 		return putStruct(what_node);
@@ -117,11 +137,13 @@ int setPer() {
 
 void print_list(struct node* what_node) {
 		struct node* temp=what_node;
+printf("node_name %s  \n",what_node->name);
     while (temp!= NULL) {
-        printf("%s %s %d %d\n", temp->position, temp->name, temp->gameScore, temp->comScore);
+//printf("hello");        
+printf("%s %s %d %d\n", temp->position, temp->name, temp->gameScore, temp->comScore);
         temp = temp->next;
     }
-    printf("\n");
+//    printf("a\n");
 }
 
 void swap(struct node* head,struct node *a, struct node *b) 
@@ -223,7 +245,9 @@ void main() {
 					}
         else if (number == 4) {
 					delplayer(come_node,new_node,deleteNode);
+printf("------%s\n",come_node->name);
 					print_list(come_node);
+printf("------\n");
 					}
 				else if (number == 5) break;
         else printf("잘못 입력하셨습니다.\n");
