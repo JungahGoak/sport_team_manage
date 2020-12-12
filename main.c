@@ -38,7 +38,7 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
 	struct node* target_ptr=head_ptr->next;	
 	struct node* target_ptr2=head_ptr2->next;
 	struct node* prev=head_ptr;
-	struct node* temp_add;
+	struct node* temp_add=(struct node*)malloc(sizeof(struct node*));
 	printf("delete 실행\n");
 	while(target_ptr!=NULL){
 		if(strcmp(target_ptr->name,name)==0){
@@ -62,7 +62,6 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
 	target_ptr2->next=temp_add;
 	temp_add->next=NULL;
 	
-
 //	fp=fopen("player.txt","wb");
 //	fwrite(&new_node,sizeof(new_node),1,fp);
 
