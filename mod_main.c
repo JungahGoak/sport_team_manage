@@ -83,14 +83,16 @@ int delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct nod
 }
 //텍스트 파일에 업로드
 void uploadFile(char* file_name,struct node* what_node ){
-	fp=fopen(file_name, "w" );
-	if (what_node!=NULL)
-	{
-		char i;
-		i=(what_node->position);
-		fputs(i,fp);
-		what_node=what_node->next;
-	}
+	remove(file_name);
+	openFile(file_name);
+		struct node* list_head=NULL;	
+    while (!feof(fp)) {
+        what_node = (struct node*)malloc(sizeof(struct node));
+        fscanf(fp, "%s %s %d %d\n", what_node->position, what_node->name, &(what_node->gameScore), &(what_node->comScore));
+
+        what_node->next = list_head;
+        list_head=what_node;
+    }
 	printf("upload end\n");
 	fclose(fp);
 }
@@ -182,7 +184,7 @@ void sortNode(struct node* what_node) //what_node 지정해주며 시작
         ptr1 = what_node; //ptr1에 what_node
         while (ptr1->next != lptr) //ptr1->next(2).lptr(NULL)
         { 
-            if ((ptr1->gameScore)+(ptr1->comScore) > (ptr1->next->gameScore)+(ptr1->next->comScore)) 
+            if ((0.01*perGame)*(ptr1->gameScore)+(0.01*perCom)*(ptr1->comScore) > (0.01*perGame)*(ptr1->next->gameScore)+(0.01*perCom)*(ptr1->next->comScore)) 
             {  
                 swap(head,ptr1, ptr1->next); //ptr1,ptr1->next
                 swapped = 1; //swapped=1
@@ -196,7 +198,7 @@ void sortNode(struct node* what_node) //what_node 지정해주며 시작
 
 		struct node* temp=what_node;
     while (temp!= NULL) {
-        printf("%s %s %d\n", temp->position, temp->name, (temp->gameScore)+(temp->comScore));
+        printf("%s %s %0.1f\n", temp->position, temp->name, (0.01*perGame)*(temp->gameScore)+(0.01*perCom)*(temp->comScore));
         temp = temp->next;
     }
     printf("\n");
@@ -234,8 +236,8 @@ void main() {
         else if (number == 4) {
 					delplayer(come_node,new_node,deleteNode);
 					print_list(come_node);
-					uploadFile("freeplayer.txt",come_node);
-					uploadFile("player.txt",new_node);
+//					uploadFile("freeplayer.txt",come_node);
+//					uploadFile("player.txt",new_node);
 					}
 				else if (number == 5) break;
         else printf("잘못 입력하셨습니다.\n");
