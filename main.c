@@ -13,14 +13,12 @@ struct node {
 };
 
 //현재 있는 선수
-	struct node* new_node;
+//	struct node* new_node;
 //영입가능선수
-	struct node* come_node;
+//	struct node* come_node;
 
-struct node* list_head = NULL;
 
 FILE* fp = NULL;
-//char filename[20];
 
 //파일 열기
 void openFile(char* filename) {
@@ -33,29 +31,15 @@ void openFile(char* filename) {
 
 void print_list(struct node*);
 
-/*
-void addNode(struct node* head_ptr,char* name){
-	struct node* target_ptr=head_ptr->next;
-
-
-}
-*/
 //4번 기능 함수
 //파일내 텍스트 내용  삭제, 추가
 
-void deleteNode(struct node* head_ptr,char* name){
-
-		openFile("freeplayer.txt");
-    while (!feof(fp)) {
-        head_ptr = (struct node*)malloc(sizeof(struct node));
-        fscanf(fp, "%s %s %d %d\n", head_ptr->position, head_ptr->name, &(head_ptr->gameScore), &(head_ptr->comScore));
-
-        head_ptr->next = list_head;
-        list_head = head_ptr;
-    }
-
+void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
 	struct node* target_ptr=head_ptr->next;	
+	struct node* target_ptr2=head_ptr2->next;
 	struct node* prev=head_ptr;
+	struct node* temp_add;
+	printf("delete 실행\n");
 	while(target_ptr!=NULL){
 		if(strcmp(target_ptr->name,name)==0){
 			break;
@@ -67,9 +51,18 @@ void deleteNode(struct node* head_ptr,char* name){
 	}
 	if(target_ptr==NULL) return;
 
+	target_ptr=temp_add; //
 	prev->next=target_ptr->next;
 	free(target_ptr);
-//	print_list(new_node);
+//	target_ptr=head_ptr;
+	
+	while(target_ptr2->next!=NULL){
+		target_ptr2=target_ptr2->next;
+		}
+	target_ptr2->next=temp_add;
+	temp_add->next=NULL;
+	
+
 //	fp=fopen("player.txt","wb");
 //	fwrite(&new_node,sizeof(new_node),1,fp);
 
@@ -77,18 +70,18 @@ void deleteNode(struct node* head_ptr,char* name){
 
 }
 
-int delplayer(struct node* head_ptr,void(*del)(struct node* head,char *name)){
+int delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct node* head,struct node* head2,char *name)){
 	char name[20];
 	printf("추가할 선수를 입력하세요.");
 	scanf("%s",name);
-	del=deleteNode;
-	del(head_ptr,name);
+	del(head_ptr,head_ptr2,name);
 }
 
 void print_list(struct node*);
 //구조체에 내용넣고 출력
 struct node* putStruct(struct node* what_node){
 		what_node=NULL;
+struct node* list_head = NULL;
     while (!feof(fp)) {
         what_node = (struct node*)malloc(sizeof(struct node));
         fscanf(fp, "%s %s %d %d\n", what_node->position, what_node->name, &(what_node->gameScore), &(what_node->comScore));
@@ -102,16 +95,10 @@ struct node* putStruct(struct node* what_node){
 //1번 기능 실행 함수
 
 struct node*  readPlayer(char* filename, struct node* what_node) {
-    openFile(filename);
-//		what_node=NULL;
-//    printf("===============================\n");
-//    printf("선수 출력\n");
-//    printf("===============================\n");
-//    printf("포지션 이름 개인게임성적 대회성적\n");
-		return putStruct(what_node);
 
-//		print_list(what_node);
-    
+    openFile(filename);
+		return putStruct(what_node);
+ 
     fclose(fp);
 }
 
@@ -138,7 +125,7 @@ void print_list(struct node* what_node) {
     printf("\n");
 }
 
-void swap(struct node *head, struct node *a, struct node *b) 
+void swap(struct node* head,struct node *a, struct node *b) 
 { 
 /*
     struct node* temp1= (struct node*)malloc(sizeof(struct node));
@@ -169,17 +156,10 @@ void swap(struct node *head, struct node *a, struct node *b)
 
 //3번 기능 실행 
  
-void sortNode(char* filename,struct node* what_node) //what_node 지정해주며 시작
+void sortNode(struct node* what_node) //what_node 지정해주며 시작
 {  
 
-//    openFile(filename);
-//		what_node=NULL;
-//    printf("===============================\n");
-//    printf("선수 출력\n");
-//    printf("===============================\n");
-//    printf("포지션 이름 개인게임성적 대회성적\n");
-//		what_node=putStruct(what_node);
-		print_list(what_node);
+		
     printf("===============================\n");
 		printf("sortnode 처음시작됨\n");    
     int swapped, i; 
@@ -195,7 +175,7 @@ void sortNode(char* filename,struct node* what_node) //what_node 지정해주며
         { 
             if ((ptr1->gameScore)+(ptr1->comScore) > (ptr1->next->gameScore)+(ptr1->next->comScore)) 
             {  
-                swap(head, ptr1, ptr1->next); //ptr1,ptr1->next
+                swap(head,ptr1, ptr1->next); //ptr1,ptr1->next
                 swapped = 1; //swapped=1
             } 
 						head=ptr1;
@@ -220,13 +200,13 @@ void main() {
     int number;
 
 //현재 있는 선수
-//	struct node* new_node;
+	struct node* new_node;
 //영입가능선수
-//	struct node* come_node;
+	struct node* come_node;
 
 //파일 내용 넣어주기		
 		new_node=readPlayer("player.txt", new_node);
-		come_node=readPlayer("freeplayer.txt", new_node);
+		come_node=readPlayer("freeplayer.txt", come_node);
 
 		while (1) {
 
@@ -238,8 +218,14 @@ void main() {
 						print_list(new_node);
 					}
         else if (number == 2) setPer();
-        else if (number == 3) sortNode("freeplayer.txt",come_node);
-        else if (number == 4) delplayer(new_node,deleteNode);
+        else if (number == 3) {
+					print_list(come_node);
+					sortNode(come_node);
+					}
+        else if (number == 4) {
+					delplayer(come_node,new_node,deleteNode);
+					print_list(come_node);
+					}
 				else if (number == 5) break;
         else printf("잘못 입력하셨습니다.\n");
     }
