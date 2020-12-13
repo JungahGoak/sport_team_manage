@@ -3,7 +3,6 @@
 #include<string.h>
 
 //구단 선수
-
 struct node {
     char position[20];
     char name[20];
@@ -20,7 +19,7 @@ int perPoten;
 
 int setPer();
 void openFile(char*);
-int delplayer(struct node* ,struct node* ,void(*del)(struct node* ,struct node* ,char *));
+void delplayer(struct node* ,struct node* ,void(*del)(struct node* ,struct node* ,char *));
 void print_list(struct node*);
 void swap(struct node* ,struct node* , struct node*);
 void sortNode(struct node*);
@@ -30,7 +29,6 @@ struct node* putStruct(struct node*);
 void uploadFile(char*,struct node*);
 
 void main() {
-
     int number;
 
 //현재 있는 선수
@@ -65,22 +63,19 @@ void main() {
           uploadFile("player.dat",new_node);
           }
         else if (number == 5) break;
-        else printf("잘못 입력하셨습니다.\n");
+        else printf("\n잘못 입력하셨습니다.\n");
     }
 }
 
 //파일 열기
 void openFile(char* filename) {
-
     fp = fopen(filename, "r+");
     if (fp == NULL) {
         printf("Cannot open file\n");
     }
 }
 
-//4번 기능 함수
 //파일내 텍스트 내용  삭제, 추가
-
 void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   printf("\n");
   struct node* target_ptr=head_ptr;
@@ -89,6 +84,9 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   struct node* temp_add;
 
   while(head_ptr!=NULL){
+    if(strcmp(head_ptr->name,name)==0) break;
+    else{
+      prev=head_ptr;
       head_ptr=head_ptr->next;
     }
   }
@@ -102,12 +100,24 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   temp_add->next=NULL;
   head_ptr2->next=temp_add;
   fclose(fp);
+  print_list(head_ptr);
+
+  uploadFile("player.dat",head_ptr2);
 }
 
-int delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct node* head,struct node* head2,char *name)){
+void delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct node* head,struct node* head2,char *name)){
   char name[20];
   printf("추가할 선수를 입력하세요.");
   scanf("%s",name);
+   while(head_ptr!=NULL){
+      if (strcmp(head_ptr->name,name)==0) break;
+      else{
+        head_ptr=head_ptr->next;
+      }
+      printf("\n\n잘못 입력하셨습니다.\n");
+      printf("\n\n아무것도 바뀌지 않습니다.\n");
+      return;
+  }
   del(head_ptr,head_ptr2,name);
 }
 
@@ -130,14 +140,14 @@ struct node* putStruct(struct node* what_node){
     while (!feof(fp)) {
         what_node = (struct node*)malloc(sizeof(struct node));
         fscanf(fp, "%s %s %d %d %d\n", what_node->position, what_node->name, &(what_node->gameScore), &(what_node->comScore),&(what_node->potenScore));
+
         what_node->next = list_head;
         list_head=what_node;
     }
     return what_node;
 }
 
-//1번 기능 실행 함수
-
+//선수 읽기
 struct node* readPlayer(char* filename, struct node* what_node) {
     struct node* k;
     openFile(filename);
@@ -147,8 +157,7 @@ struct node* readPlayer(char* filename, struct node* what_node) {
 }
 
 
-//2번 기능 실행 함수
-
+//평가 기능 설정
 int setPer() {
     printf("\n 게임 성적 평가 비율을 입력하세요");
     scanf("%d", &perGame);
@@ -160,8 +169,6 @@ int setPer() {
     scanf("%d", &perPoten);
 
     printf("\n 솔로게임 평가 비율  %d\n 대회 게임 평가 비율 %d\n 잠재력 >평가비율%d\n 으로 설정되었습니다.\n ", perGame, perCom,perPoten);
-}
-
 void print_list(struct node* what_node) {
     struct node* temp=what_node;
     printf("포지션 이름 게임성적 대회성적 잠재력\n");
@@ -194,24 +201,22 @@ void swap(struct node* head,struct node *a, struct node *b)
     b->potenScore=temp4;
 }
 
-//3번 기능 실행
-
-void sortNode(struct node* what_node) //what_node 지정해주며 시작
+//정렬    
+void sortNode(struct node* what_node) 
 {
     printf("\n==================================\n");
     printf("영입 가능한 선수 능력치 순으로 출력\n\n");
 
-//평가비율을 반영하여 능력치 합 정렬 시작
     int swapped, i;
     struct node *ptr1;
     struct node *lptr = NULL;
     struct node *head=what_node;
 
-    do //do while문 이용
+    do 
     {
-        swapped = 0; //swapped=0으로 설정
-        ptr1 = what_node; //ptr1에 what_node
-        while (ptr1->next != lptr) //ptr1->next(2).lptr(NULL)
+        swapped = 0; 
+        ptr1 = what_node; 
+        while (ptr1->next != lptr) 
         {
            if ((0.01*perGame)*(ptr1->gameScore)+(0.01*perCom)*(ptr1->comScore)+(0.01*perPoten)*(ptr1->potenScore) > (0.01*perGame)*(ptr1->next->gameScore)+(0.01*perCom)*(ptr1->next->comScore)+(0.01*perPoten)*(ptr1->next->potenScore))
             {
