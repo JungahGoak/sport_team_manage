@@ -41,10 +41,10 @@ void main() {
 //파일 내용 넣어주기
     new_node=readPlayer("player.dat", new_node);
     come_node=readPlayer("freeplayer.dat", come_node);
-    while (1) {
 
-        printf("\n1. 현재구단 선수 출력\n2. 영입가능 선수 출력\n3. 평가비율 설정
-하여 정렬\n4. 선수추가,삭제\n5. 종료\n");
+    while (1) {
+        printf("\n1. 현재구단 선수 출력\n2. 영입가능 선수 출력\n3. 평가비
+율 설정하여 정렬\n4. 선수추가,삭제\n5. 종료\n");
         scanf("%d", &number);
         int tmp_gamescore = 0;
 
@@ -86,20 +86,13 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   struct node* target_ptr=head_ptr;
   struct node* target_ptr2=head_ptr2->next;
   struct node* prev=head_ptr;
-  struct node* temp_add=(struct node*)malloc(sizeof(struct node*));
+  struct node* temp_add;
 
   while(head_ptr!=NULL){
-    if(strcmp(head_ptr->name,name)==0) break;
-    else{
-      prev=head_ptr;
       head_ptr=head_ptr->next;
-
     }
   }
 
-//  if(target_ptr==NULL) return;
-
-  temp_add=head_ptr;
   printf("%s\n",temp_add->position);
   prev->next=head_ptr->next;
   free(head_ptr);
@@ -109,7 +102,6 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   temp_add->next=NULL;
   head_ptr2->next=temp_add;
   fclose(fp);
-
 }
 
 int delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct node* head,struct node* head2,char *name)){
@@ -128,7 +120,7 @@ void uploadFile(char* file_name,struct node* what_node ){
         list_head=what_node->next;
         what_node=list_head;
     }
-  printf("upload end\n");
+  printf("\n player.dat upload end\n");
   fclose(fp);
 }
 
@@ -138,7 +130,6 @@ struct node* putStruct(struct node* what_node){
     while (!feof(fp)) {
         what_node = (struct node*)malloc(sizeof(struct node));
         fscanf(fp, "%s %s %d %d %d\n", what_node->position, what_node->name, &(what_node->gameScore), &(what_node->comScore),&(what_node->potenScore));
-
         what_node->next = list_head;
         list_head=what_node;
     }
@@ -159,16 +150,16 @@ struct node* readPlayer(char* filename, struct node* what_node) {
 //2번 기능 실행 함수
 
 int setPer() {
-    printf("\n게임 성적 평가 비율을 입력하세요");
+    printf("\n 게임 성적 평가 비율을 입력하세요");
     scanf("%d", &perGame);
 
-    printf("대회 성적 평가 비율을 입력하세요");
+    printf(" 대회 성적 평가 비율을 입력하세요");
     scanf("%d", &perCom);
 
-    printf("잠재력 평가 비율을 입력하세요");
+    printf(" 잠재력 평가 비율을 입력하세요");
     scanf("%d", &perPoten);
-    
-    printf("\n솔로게임 평가 비율  %d\n 대회 게임 평가 비율 %d\n 잠재력 평가비율%d\n으로 설정되었습니다.\n ", perGame, perCom,perPoten);
+
+    printf("\n 솔로게임 평가 비율  %d\n 대회 게임 평가 비율 %d\n 잠재력 >평가비율%d\n 으로 설정되었습니다.\n ", perGame, perCom,perPoten);
 }
 
 void print_list(struct node* what_node) {
@@ -236,7 +227,7 @@ void sortNode(struct node* what_node) //what_node 지정해주며 시작
 
     struct node* temp=what_node;
     while (temp!= NULL) {
-        printf("%s %s %0.1f\n", temp->position, temp->name, (0.01*perGame)*(temp->gameScore)+(0.01*perCom)*(temp->comScore)+(0.01*perPoten)*(temp->potenScore));
+        printf("%s %s %0.1f\n", temp->position, temp->name, ((0.01*perGame)*(temp->gameScore)+(0.01*perCom)*(temp->comScore)+(0.01*perPoten)*(temp->potenScore))/3);
         temp = temp->next;
     }
     printf("\n");
