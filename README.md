@@ -2,7 +2,10 @@
 스포츠 구단 선수 관리 프로그램 
 
 # 실행
-
+git clone
+``` 
+$ git clone https://github.com/Jungahgo/sport_team_manage.git
+```
 
 # 기능
 1. 현재 구단 선수 출력 
