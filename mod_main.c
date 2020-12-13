@@ -81,21 +81,22 @@ int delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct nod
 	scanf("%s",name);
 	del(head_ptr,head_ptr2,name);
 }
+/*
 //텍스트 파일에 업로드
 void uploadFile(char* file_name,struct node* what_node ){
 	remove(file_name);
 	openFile(file_name);
 		struct node* list_head=NULL;	
-    while (!feof(fp)) {
-        what_node = (struct node*)malloc(sizeof(struct node));
-        fscanf(fp, "%s %s %d %d\n", what_node->position, what_node->name, &(what_node->gameScore), &(what_node->comScore));
-
+    while (what_node!=NULL) {
+        fprintf(fp, "%s %s %d %d\n", what_node->position, what_node->name, (what_node->gameScore), (what_node->comScore));
+				if (what_node->next==NULL) break;
         what_node->next = list_head;
         list_head=what_node;
     }
 	printf("upload end\n");
 	fclose(fp);
 }
+*/
 
 //
 void print_list(struct node*);
