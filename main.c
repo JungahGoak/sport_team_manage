@@ -105,9 +105,6 @@ void deleteNode(struct node* head_ptr,struct node* head_ptr2,char* name){
   temp_add->next=NULL;
   head_ptr2->next=temp_add;
   fclose(fp);
-  print_list(head_ptr);
-
-  uploadFile("player.dat",head_ptr2);
 }
 
 void delplayer(struct node* head_ptr,struct node* head_ptr2,void(*del)(struct node* head,struct node* head2,char *name)){
