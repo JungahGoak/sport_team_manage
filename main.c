@@ -43,8 +43,7 @@ void main() {
     come_node=readPlayer("freeplayer.dat", come_node);
 
     while (1) {
-        printf("\n1. 현재구단 선수 출력\n2. 영입가능 선수 출력\n3. 평가비
-율 설정하여 정렬\n4. 선수추가,삭제\n5. 종료\n");
+        printf("\n1. 현재구단 선수 출력\n2. 영입가능 선수 출력\n3. 평가비율 설정하여 정렬\n4. 선수추가,삭제\n5. 종료\n");
         scanf("%d", &number);
         int tmp_gamescore = 0;
 
