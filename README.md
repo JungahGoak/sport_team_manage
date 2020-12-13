@@ -2,9 +2,6 @@
 스포츠 구단 선수 관리 프로그램 
 
 # 실행
-'''
-https://github.com/Jungahgo/sport_team_manage.git
-'''
 
 
 # 기능
