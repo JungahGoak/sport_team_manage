@@ -6,7 +6,15 @@ git clone
 ``` 
 $ git clone https://github.com/Jungahgo/sport_team_manage.git
 ```
+make
+``` 
+$ make
+```
 
+실행
+``` 
+$ ./main
+```
 # 기능
 1. 현재 구단 선수 출력 
     * 현재 팀에 소속되어 있는 선수의 포지션, 이름, 게임 성적, 대회 성적,  잠재력 player.dat에서 불러와 출력
