@@ -168,6 +168,9 @@ int setPer() {
     scanf("%d", &perPoten);
 
     printf("\n 솔로게임 평가 비율  %d\n 대회 게임 평가 비율 %d\n 잠재력 >평가비율%d\n 으로 설정되었습니다.\n ", perGame, perCom,perPoten);
+}
+
+//출력 함수
 void print_list(struct node* what_node) {
     struct node* temp=what_node;
     printf("포지션 이름 게임성적 대회성적 잠재력\n");
